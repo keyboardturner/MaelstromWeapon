@@ -1,0 +1,32 @@
+## Interface: 100207
+## Author: Keyboardturner
+## Version: 0.0.1
+## Title: Maelstrom Weapon
+## Notes: Displays a widget for Enhancement Shaman that tracks the Maelstrom Weapon buff charges in a style similar to Combo Points.
+## IconTexture: Interface/Icons/spell_shaman_maelstromweapon.blp
+
+## Title-enUS: Maelstrom Weapon
+## Notes-enUS: Displays a widget for Enhancement Shaman that tracks the Maelstrom Weapon buff charges in a style similar to Combo Points.
+## Title-frFR: Placeholder
+## Notes-frFR: Placeholder
+## Title-esES: Placeholder
+## Notes-esES: Placeholder
+## Title-esMX: Placeholder
+## Notes-esMX: Placeholder
+## Title-deDE: Placeholder
+## Notes-deDE: Placeholder
+## Title-itIT: Placeholder
+## Notes-itIT: Placeholder
+## Title-ptBR: Placeholder
+## Notes-ptBR: Placeholder
+## Title-ruRU: Placeholder
+## Notes-ruRU: Placeholder
+## Title-koKR: Placeholder
+## Notes-koKR: Placeholder
+## Title-zhCN: Placeholder
+## Notes-zhCN: Placeholder
+## Title-zhTW: Placeholder
+## Notes-zhTW: Placeholder
+## SavedVariables: MaelWeap_DB
+
+MaelstromWeapon.lua
