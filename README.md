@@ -3,6 +3,8 @@ Displays a widget for Enhancement Shaman that tracks the Maelstrom Weapon buff c
 
 Hi this is a temporary description until I write something better :)
 
+## This addon is currently not ready for release
+
 Slash commands currently: /maelstromweapon
 
 Todo:
