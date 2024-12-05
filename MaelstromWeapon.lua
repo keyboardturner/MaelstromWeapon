@@ -228,6 +228,12 @@ function MW.ChargeCheck()
 				for i = 1,chargeCount do
 					MW.charge[i].texFill:Show();
 					MW.charge[i].texFill:SetVertexColor(.75,.75,1)
+					if duration and expirationTime then
+						local startTime = expirationTime - duration
+						MW.charge[i].cooldown:SetCooldown(startTime, duration)
+					else
+						MW.charge[i].cooldown:Clear() -- Clear if no duration
+					end
 				end
 			end
 
@@ -235,10 +241,22 @@ function MW.ChargeCheck()
 				for i = 1, 5 do
 					MW.charge[i].texFill:Show();
 					MW.charge[i].texFill:SetVertexColor(.75,.75,1)
+					if duration and expirationTime then
+						local startTime = expirationTime - duration
+						MW.charge[i].cooldown:SetCooldown(startTime, duration)
+					else
+						MW.charge[i].cooldown:Clear() -- Clear if no duration
+					end
 				end
 				for i = 1,(chargeCount-5) do
 					MW.charge[i].texFill:Show();
 					MW.charge[i].texFill:SetVertexColor(1,.35,.35)
+					if duration and expirationTime then
+						local startTime = expirationTime - duration
+						MW.charge[i].cooldown:SetCooldown(startTime, duration)
+					else
+						MW.charge[i].cooldown:Clear() -- Clear if no duration
+					end
 				end
 			end
 
