@@ -224,20 +224,21 @@ function MW.ChargeCheck()
 			end
 			]]
 
-			for i = 1, chargeCount do
-				MW.charge[i].texFill:Show()
-				MW.charge[i].texFill:SetVertexColor(.75, .75, 1)
-				if duration and expirationTime then
-					local startTime = expirationTime - duration
-					MW.charge[i].cooldown:SetCooldown(startTime, duration)
-				else
-					MW.charge[i].cooldown:Clear() -- Clear if no duration
+			if chargeCount <= 5 then
+				for i = 1,chargeCount do
+					MW.charge[i].texFill:Show();
+					MW.charge[i].texFill:SetVertexColor(.75,.75,1)
 				end
 			end
 
 			if chargeCount > 5 then
-				for i = 1, (chargeCount - 5) do
-					MW.charge[i].texFill:SetVertexColor(1, .35, .35)
+				for i = 1, 5 do
+					MW.charge[i].texFill:Show();
+					MW.charge[i].texFill:SetVertexColor(.75,.75,1)
+				end
+				for i = 1,(chargeCount-5) do
+					MW.charge[i].texFill:Show();
+					MW.charge[i].texFill:SetVertexColor(1,.35,.35)
 				end
 			end
 
