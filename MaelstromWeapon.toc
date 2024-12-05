@@ -1,9 +1,12 @@
 ## Interface: 110005
 ## Author: Keyboardturner
-## Version: 0.0.1
+## Version: @project-version@
 ## Title: Maelstrom Weapon
 ## Notes: Displays a widget for Enhancement Shaman that tracks the Maelstrom Weapon buff charges in a style similar to Combo Points.
 ## IconTexture: Interface/Icons/spell_shaman_maelstromweapon.blp
+## X-Curse-Project-ID: 1026607
+## X-WoWI-ID: 26880
+## X-Wago-ID: QKywJ4N7
 
 ## Title-enUS: Maelstrom Weapon
 ## Notes-enUS: Displays a widget for Enhancement Shaman that tracks the Maelstrom Weapon buff charges in a style similar to Combo Points.
