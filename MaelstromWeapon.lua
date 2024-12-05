@@ -6,12 +6,13 @@ if classId ~= 7 then
 end
 
 local MW = CreateFrame("frame", nil, UIParent)
-MW:SetPoint("CENTER", PlayerFrame, "BOTTOM", 37,16)
+MW:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 MW:SetSize(256,100)
 MW:SetFrameStrata("BACKGROUND")
 MW:SetScale(.90)
+MW:SetClampedToScreen(true);
 
-local editFrame = CreateFrame("Frame", "MyFrame", MW, BackdropTemplateMixin and "BackdropTemplate")
+local editFrame = CreateFrame("Frame", nil, MW, BackdropTemplateMixin and "BackdropTemplate")
 editFrame:SetWidth(500)
 editFrame:SetHeight(300)
 editFrame:SetAllPoints(MW)
@@ -25,13 +26,31 @@ editFrame:SetBackdrop(backdropInfo)
 editFrame:SetBackdropColor(1,1,1,1) -- Black background
 editFrame:SetBackdropBorderColor(.227,.773,1.00,1) -- White border
 
+local function SaveFramePosition()
+	if not MaelWeap_DB then MaelWeap_DB = {} end
+	local point, relativeTo, relativePoint, xOfs, yOfs = MW:GetPoint();
+	MaelWeap_DB.position = {point = point, relativePoint = relativePoint, xOfs = xOfs, yOfs = yOfs};
+end
+
+local function LoadFramePosition()
+	if MaelWeap_DB and MaelWeap_DB.position then
+		local pos = MaelWeap_DB.position;
+		MW:SetPoint(pos.point, UIParent, pos.relativePoint, pos.xOfs, pos.yOfs);
+	else
+		MW:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
+	end
+end
+
 function editFrame.OnShow()
 	editFrame:Show();
 	MW:EnableMouse(true)
 	MW:SetMovable(true)
 	MW:RegisterForDrag("LeftButton")
 	MW:SetScript("OnDragStart", MW.StartMoving)
-	MW:SetScript("OnDragStop", MW.StopMovingOrSizing)
+	MW:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing()
+		SaveFramePosition()
+	end)
 end
 function editFrame.OnHide()
 		editFrame:Hide()
@@ -81,6 +100,13 @@ for i = 1,5 do
 	MW.charge[i].texCover = MW.charge[i]:CreateTexture(nil, "BACKGROUND", nil, 3)
 	MW.charge[i].texCover:SetAllPoints(MW.charge[i])
 	MW.charge[i].texCover:SetTexture("Interface\\AddOns\\MaelstromWeapon\\Textures\\Charge_Cover.blp")
+	MW.charge[i].cooldown = CreateFrame("Cooldown", nil, MW.charge[i], "CooldownFrameTemplate")
+	MW.charge[i].cooldown:SetPoint("TOPLEFT", MW.charge[i], "TOPLEFT", -.5, .5)
+	MW.charge[i].cooldown:SetPoint("BOTTOMRIGHT", MW.charge[i], "BOTTOMRIGHT", .5, -.5)
+	MW.charge[i].cooldown:SetReverse(true)
+	MW.charge[i].cooldown:SetSwipeTexture("Interface\\AddOns\\MaelstromWeapon\\Textures\\Charge_Cover.blp", 0,0,0,1)
+	MW.charge[i].cooldown:SetUseCircularEdge(true)
+	MW.charge[i].cooldown:SetEdgeScale(.8)
 
 
 	MW.charge[i].texFill:Hide();
@@ -89,10 +115,12 @@ end
 function MW.SpecCheck()
 	local id, name, description, icon, role, primaryStat = GetSpecializationInfo(GetSpecialization())
 	if id == 263 then
+		--[[
 		if TotemFrame:IsShown() == true then
 			TotemFrame:SetPoint("TOPLEFT", PlayerFrame, "BOTTOM", -46, 5)
 			TotemFrame:SetScale(.9)
 		end
+		]]
 		return true
 	end
 end
@@ -113,36 +141,44 @@ local buffInfo = {
 function MW.ChargeCheck()
 	MW.ClearCharges()
 	for k, v in pairs(buffInfo) do
-		if C_UnitAuras.GetPlayerAuraBySpellID(v) then
-			local chargeCount = C_UnitAuras.GetPlayerAuraBySpellID(v).applications
+		local aura = C_UnitAuras.GetPlayerAuraBySpellID(v)
+		if aura then
+			local chargeCount = aura.applications
+			local duration = aura.duration
+			local expirationTime = aura.expirationTime
+
+			--[[
 			if TotemFrame:IsShown() == true then
 				TotemFrame:SetPoint("TOPLEFT", PlayerFrame, "BOTTOM", -46, 5)
 				TotemFrame:SetScale(.9)
 			end
-			if chargeCount <= 5 then
-				for i = 1,chargeCount do
-					MW.charge[i].texFill:Show();
-					MW.charge[i].texFill:SetVertexColor(.75,.75,1)
+			]]
+
+			for i = 1, chargeCount do
+				MW.charge[i].texFill:Show()
+				MW.charge[i].texFill:SetVertexColor(.75, .75, 1)
+				if duration and expirationTime then
+					local startTime = expirationTime - duration
+					MW.charge[i].cooldown:SetCooldown(startTime, duration)
+				else
+					MW.charge[i].cooldown:Clear() -- Clear if no duration
 				end
 			end
+
 			if chargeCount > 5 then
-				for i = 1, 5 do
-					MW.charge[i].texFill:Show();
-					MW.charge[i].texFill:SetVertexColor(.75,.75,1)
-				end
-				for i = 1,(chargeCount-5) do
-					MW.charge[i].texFill:Show();
-					MW.charge[i].texFill:SetVertexColor(1,.35,.35)
+				for i = 1, (chargeCount - 5) do
+					MW.charge[i].texFill:SetVertexColor(1, .35, .35)
 				end
 			end
+
 			return chargeCount
 		else
-			local chargeCount = 0
-			for i = 1,5 do
-				MW.charge[i].texFill:Hide();
-				MW.charge[i].texFill:SetVertexColor(.75,.75,1)
+			for i = 1, 5 do
+				MW.charge[i].texFill:Hide()
+				MW.charge[i].cooldown:Clear() -- Clear cooldown if no aura
+				MW.charge[i].texFill:SetVertexColor(.75, .75, 1)
 			end
-			return chargeCount
+			return 0
 		end
 	end
 end
@@ -228,13 +264,86 @@ local EventsTable = {
 	"SPEC_INVOLUNTARILY_CHANGED",
 };
 
-MW:RegisterEvent("ADDON_LOADED")
+MW:RegisterEvent("ADDON_LOADED");
+
+local LOCALE = GetLocale();
+
+local slashCmdLocalized_1 = "/maelstromweapon";
+
+local function adjustSlashCmd()
+
+	if LOCALE == "enUS" then
+		-- The EU English game client also
+		-- uses the US English locale code.
+		slashCmdLocalized_1 = "/maelstromweapon";
+	return end
+
+	if LOCALE == "esES" or LOCALE == "esMX" then
+		-- Spanish translations go here
+
+		slashCmdLocalized_1 = "/armavorágine";
+	return end
+
+	if LOCALE == "deDE" then
+		-- German translations go here
+
+		slashCmdLocalized_1 = "/waffedesmahlstroms";
+	return end
+
+	if LOCALE == "frFR" then
+		-- French translations go here
+
+		slashCmdLocalized_1 = "/armedumaelström";
+	return end
+
+	if LOCALE == "itIT" then
+		-- French translations go here
+
+		slashCmdLocalized_1 = "/armadelmaelstrom";
+	return end
+
+	if LOCALE == "ptBR" then
+		-- Brazilian Portuguese translations go here
+
+		slashCmdLocalized_1 = "/armadavoragem";
+	-- Note that the EU Portuguese WoW client also
+	-- uses the Brazilian Portuguese locale code.
+	return end
+
+	if LOCALE == "ruRU" then
+		-- Russian translations go here
+
+		slashCmdLocalized_1 = "/оружиеводоворота";
+	return end
+
+	if LOCALE == "koKR" then
+		-- Korean translations go here
+
+		slashCmdLocalized_1 = "/소용돌이치는무기";
+	return end
+
+	if LOCALE == "zhCN" then
+		-- Simplified Chinese translations go here
+
+		slashCmdLocalized_1 = "/漩涡武器";
+	return end
+
+	if LOCALE == "zhTW" then
+		-- Traditional Chinese translations go here
+
+		slashCmdLocalized_1 = "/漩涡武器";
+	return end
+
+end
+
 
 MW:SetScript("OnEvent", function(self, event, arg1)
 	if event == "ADDON_LOADED" and arg1 == "MaelstromWeapon" then
+		adjustSlashCmd();
 
+		LoadFramePosition();
 
-		SLASH_MAELSTROMWEAPON1 = "/".."maelstromweapon"
+		SLASH_MAELSTROMWEAPON1 = slashCmdLocalized_1;
 		SlashCmdList.MAELSTROMWEAPON = HandleSlashCommands;
 
 		for k, v in pairs(EventsTable) do
@@ -252,4 +361,4 @@ MW:SetScript("OnEvent", function(self, event, arg1)
 	
 end);
 
-MW.charge:SetScript("OnEvent", MW.ChargeCheck)
+MW.charge:SetScript("OnEvent", MW.ChargeCheck);
