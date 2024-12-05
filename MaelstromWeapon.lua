@@ -107,7 +107,7 @@ do
 	local formatters = {
 		[MinimalSliderWithSteppersMixin.Label.Left] = function(value) return minValue end,
 		[MinimalSliderWithSteppersMixin.Label.Right] = function(value) return maxValue end,
-		[MinimalSliderWithSteppersMixin.Label.Top] = function(value) return HUD_EDIT_MODE_SETTING_UNIT_FRAME_FRAME_SIZE .. ": " .. format("%.1f", ScaleSlider.Slider:GetValue()) end,
+		[MinimalSliderWithSteppersMixin.Label.Top] = function(value) return (HUD_EDIT_MODE_SETTING_UNIT_FRAME_FRAME_SIZE or UI_SCALE) .. ": " .. format("%.1f", ScaleSlider.Slider:GetValue()) end,
 		--[MinimalSliderWithSteppersMixin.Label.Min] = function(value) return "Minimum" end,
 		--[MinimalSliderWithSteppersMixin.Label.Max] = function(value) return "Maximum" end,
 	};
@@ -137,7 +137,7 @@ Dropdown:SetPoint("BOTTOMRIGHT", editFrame, "BOTTOMRIGHT", 0, 0);
 Dropdown:SetSize(150,30)
 Dropdown:SetupMenu(function(dropdown, rootDescription)
 	rootDescription:CreateButton(LOCK_FRAME, editFrame.OnHide)
-	rootDescription:CreateButton(HUD_EDIT_MODE_SETTING_UNIT_FRAME_FRAME_SIZE, editFrame.ShowScaleButton)
+	rootDescription:CreateButton((HUD_EDIT_MODE_SETTING_UNIT_FRAME_FRAME_SIZE or WINDOW_SIZE), editFrame.ShowScaleButton)
 	rootDescription:CreateButton(RESET_TO_DEFAULT, ClearSettings)
 end)
 
@@ -180,6 +180,9 @@ for i = 1,5 do
 end
 
 function MW.SpecCheck()
+	if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+		return true
+	end
 	local id, name, description, icon, role, primaryStat = GetSpecializationInfo(GetSpecialization())
 	if id == 263 then
 		--[[
@@ -245,7 +248,6 @@ function MW.ChargeCheck()
 				MW.charge[i].cooldown:Clear() -- Clear cooldown if no aura
 				MW.charge[i].texFill:SetVertexColor(.75, .75, 1)
 			end
-			return 0
 		end
 	end
 end
@@ -331,6 +333,14 @@ local EventsTable = {
 	"SPEC_INVOLUNTARILY_CHANGED",
 };
 
+local EventsTableClassic = {
+	"TRAIT_CONFIG_UPDATED",
+	"PLAYER_TALENT_UPDATE",
+	"PLAYER_ENTERING_WORLD",
+	"ACTIVE_TALENT_GROUP_CHANGED",
+	"PLAYER_TALENT_UPDATE",
+};
+
 MW:RegisterEvent("ADDON_LOADED");
 
 local LOCALE = GetLocale();
@@ -414,8 +424,14 @@ MW:SetScript("OnEvent", function(self, event, arg1)
 		SLASH_MAELSTROMWEAPON1 = slashCmdLocalized_1;
 		SlashCmdList.MAELSTROMWEAPON = HandleSlashCommands;
 
-		for k, v in pairs(EventsTable) do
-			MW:RegisterEvent(v)
+		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+			for k, v in pairs(EventsTable) do
+				MW:RegisterEvent(v)
+			end
+		else
+			for k, v in pairs(EventsTableClassic) do
+				MW:RegisterEvent(v)
+			end
 		end
 	end
 
