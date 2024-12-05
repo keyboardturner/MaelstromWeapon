@@ -43,13 +43,20 @@ local function LoadFramePosition()
 	end
 end
 
-local function SetFrameScale()
+local function SetFrameScale(scale)
 	if MaelWeap_DB and MaelWeap_DB.scale then
 		local scale = MaelWeap_DB.scale;
 		MW:SetScale(scale);
 	else
-		MW:SetScale(1);
+		if not scale then scale = 1 end
+		MW:SetScale(scale);
 	end
+end
+
+local function ClearSettings()
+	if MaelWeap_DB then MaelWeap_DB = nil end
+	LoadFramePosition();
+	SetFrameScale();
 end
 
 function editFrame.OnShow()
@@ -109,8 +116,9 @@ do
 	ScaleSlider:Init(initialValue, minValue, maxValue, steps, formatters);
 
 	local function SliderFuncTest()
+		if not MaelWeap_DB then MaelWeap_DB = {} end
 		MaelWeap_DB.scale = ScaleSlider.Slider:GetValue();
-		SetFrameScale();
+		SetFrameScale(MaelWeap_DB.scale);
 	end
 	-- Set up a listener for the value changed event
 	ScaleSlider:RegisterCallback("OnValueChanged",SliderFuncTest)
@@ -130,6 +138,7 @@ Dropdown:SetSize(150,30)
 Dropdown:SetupMenu(function(dropdown, rootDescription)
 	rootDescription:CreateButton(LOCK_FRAME, editFrame.OnHide)
 	rootDescription:CreateButton(HUD_EDIT_MODE_SETTING_UNIT_FRAME_FRAME_SIZE, editFrame.ShowScaleButton)
+	rootDescription:CreateButton(RESET_TO_DEFAULT, ClearSettings)
 end)
 
 editFrame:Hide()
