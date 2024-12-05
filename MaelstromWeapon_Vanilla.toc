@@ -1,0 +1,32 @@
+## Interface: 11505
+## Author: Keyboardturner
+## Version: 0.0.1
+## Title: Maelstrom Weapon
+## Notes: Displays a widget for Enhancement Shaman that tracks the Maelstrom Weapon buff charges in a style similar to Combo Points.
+## IconTexture: Interface/Icons/spell_shaman_maelstromweapon.blp
+
+## Title-enUS: Maelstrom Weapon
+## Notes-enUS: Displays a widget for Enhancement Shaman that tracks the Maelstrom Weapon buff charges in a style similar to Combo Points.
+## Title-frFR: Arme du Maelström
+## Notes-frFR: Affiche un widget pour le Chaman Amélioration qui suit les charges du buff Arme du Maelström dans un style similaire aux Points de Combo.
+## Title-esES: Arma vorágine
+## Notes-esES: Muestra un widget para Chaman Mejora que rastrea las cargas del beneficio Arma vorágine en un estilo similar a los Puntos de Combo.
+## Title-esMX: Arma vorágine
+## Notes-esMX: Muestra un widget para Chaman Mejora que rastrea las cargas del beneficio Arma vorágine en un estilo similar a los Puntos de Combo.
+## Title-deDE: Waffe des Mahlstroms
+## Notes-deDE: Zeigt ein Widget für Verstärkungs-Schamanen an, das die Stapel des Mahlstrom-Waffen-Buffs in einem Stil ähnlich der Combopunkte verfolgt.
+## Title-itIT: Arma del Maelstrom
+## Notes-itIT: Mostra un widget per Sciamano Potenziamento che traccia le cariche del buff Arma del Maelstrom in uno stile simile ai Punti Combo.
+## Title-ptBR: Arma da Voragem
+## Notes-ptBR: Exibe um widget para Xamã Aperfeiçoamento que rastreia as cargas do buff Arma da Voragem em um estilo semelhante aos Pontos de Combo.
+## Title-ruRU: Оружие Водоворота
+## Notes-ruRU: Отображает виджет для шамана со специализацией «Стихии», который отслеживает заряды эффекта «Оружие Водоворота» в стиле, похожем на очки серии.
+## Title-koKR: 소용돌이치는 무기
+## Notes-koKR: 강화 주술사를 위한 위젯을 표시하며 소용돌이치는 무기 버프 충전을 연계 포인트와 유사한 스타일로 추적합니다.
+## Title-zhCN: 漩涡武器
+## Notes-zhCN: 为增强萨满显示一个小组件，用于以类似连击点的样式追踪漩涡武器增益层数。
+## Title-zhTW: 漩涡武器
+## Notes-zhTW: 為增強薩滿顯示一個小工具，用於以類似連擊點的樣式追蹤漩渦武器增益層數。
+## SavedVariables: MaelWeap_DB
+
+MaelstromWeapon.lua

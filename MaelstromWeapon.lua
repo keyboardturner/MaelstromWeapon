@@ -35,43 +35,101 @@ end
 local function LoadFramePosition()
 	if MaelWeap_DB and MaelWeap_DB.position then
 		local pos = MaelWeap_DB.position;
+		MW:ClearAllPoints();
 		MW:SetPoint(pos.point, UIParent, pos.relativePoint, pos.xOfs, pos.yOfs);
 	else
+		MW:ClearAllPoints();
 		MW:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
+	end
+end
+
+local function SetFrameScale()
+	if MaelWeap_DB and MaelWeap_DB.scale then
+		local scale = MaelWeap_DB.scale;
+		MW:SetScale(scale);
+	else
+		MW:SetScale(1);
 	end
 end
 
 function editFrame.OnShow()
 	editFrame:Show();
-	MW:EnableMouse(true)
-	MW:SetMovable(true)
-	MW:RegisterForDrag("LeftButton")
-	MW:SetScript("OnDragStart", MW.StartMoving)
+	MW:EnableMouse(true);
+	MW:SetMovable(true);
+	MW:RegisterForDrag("LeftButton");
+	MW:SetScript("OnDragStart", MW.StartMoving);
 	MW:SetScript("OnDragStop", function(self)
-		self:StopMovingOrSizing()
-		SaveFramePosition()
+		self:StopMovingOrSizing();
+		SaveFramePosition();
 	end)
 end
 function editFrame.OnHide()
-		editFrame:Hide()
-		MW:EnableMouse(false)
-		MW:SetMovable(false)
+	editFrame:Hide();
+	MW:EnableMouse(false);
+	MW:SetMovable(false);
 end
 
-local function WPDropDownDemo_Menu(frame, level, menuList)
-	local info = UIDropDownMenu_CreateInfo()
-	info.text, info.checked = "Blue Pill", true
-	UIDropDownMenu_AddButton(info)
-	info.text, info.checked = "Red Pill", false
-	UIDropDownMenu_AddButton(info)
+editFrame.scaler = CreateFrame("Frame", nil, UIParent, "BackdropTemplate");
+local ScaleSettings = editFrame.scaler;
+ScaleSettings:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
+ScaleSettings:SetWidth(130*2);
+ScaleSettings:SetHeight((26*11));
+ScaleSettings:SetBackdrop(backdropInfo);
+ScaleSettings:SetFrameStrata("HIGH");
+ScaleSettings:Hide();
+ScaleSettings:SetBackdropColor(0,0,0,1);
+ScaleSettings.closebutton = CreateFrame("Button", nil, ScaleSettings, "UIPanelCloseButton");
+ScaleSettings.closebutton:SetWidth(24);
+ScaleSettings.closebutton:SetHeight(24);
+ScaleSettings.closebutton:SetPoint("TOPRIGHT", ScaleSettings, "TOPRIGHT", 1, 1);
+ScaleSettings.closebutton:SetScript("OnClick", function(self, button)
+	ScaleSettings:Hide();
+end)
+
+do 
+	ScaleSettings.ScaleSlider = CreateFrame("Slider", nil, ScaleSettings, "MinimalSliderWithSteppersTemplate");
+	local ScaleSlider = ScaleSettings.ScaleSlider
+	ScaleSlider:SetPoint("TOPLEFT", ScaleSettings, "TOPLEFT", 30, 1*-27);
+	ScaleSlider:SetWidth(190)
+
+	local initialValue = 1
+	local minValue = .5
+	local maxValue = 3
+	local steps = 25
+
+	local formatters = {
+		[MinimalSliderWithSteppersMixin.Label.Left] = function(value) return minValue end,
+		[MinimalSliderWithSteppersMixin.Label.Right] = function(value) return maxValue end,
+		[MinimalSliderWithSteppersMixin.Label.Top] = function(value) return HUD_EDIT_MODE_SETTING_UNIT_FRAME_FRAME_SIZE .. ": " .. format("%.1f", ScaleSlider.Slider:GetValue()) end,
+		--[MinimalSliderWithSteppersMixin.Label.Min] = function(value) return "Minimum" end,
+		--[MinimalSliderWithSteppersMixin.Label.Max] = function(value) return "Maximum" end,
+	};
+
+	-- Initialize the slider with the values and formatters
+	ScaleSlider:Init(initialValue, minValue, maxValue, steps, formatters);
+
+	local function SliderFuncTest()
+		MaelWeap_DB.scale = ScaleSlider.Slider:GetValue();
+		SetFrameScale();
+	end
+	-- Set up a listener for the value changed event
+	ScaleSlider:RegisterCallback("OnValueChanged",SliderFuncTest)
+
+	-- Optionally, enable or disable the slider
+	ScaleSlider:SetEnabled(true)  -- true to enable, false to disable
+end
+
+function editFrame.ShowScaleButton()
+	editFrame.scaler:Show();
 end
 
 local Dropdown = CreateFrame("DropdownButton", nil, editFrame, "WowStyle1DropdownTemplate")
-Dropdown:SetDefaultText("Options")
+Dropdown:SetDefaultText(MAIN_MENU)
 Dropdown:SetPoint("BOTTOMRIGHT", editFrame, "BOTTOMRIGHT", 0, 0);
 Dropdown:SetSize(150,30)
 Dropdown:SetupMenu(function(dropdown, rootDescription)
-	rootDescription:CreateButton("Lock Button", editFrame.OnHide)
+	rootDescription:CreateButton(LOCK_FRAME, editFrame.OnHide)
+	rootDescription:CreateButton(HUD_EDIT_MODE_SETTING_UNIT_FRAME_FRAME_SIZE, editFrame.ShowScaleButton)
 end)
 
 editFrame:Hide()
@@ -342,6 +400,7 @@ MW:SetScript("OnEvent", function(self, event, arg1)
 		adjustSlashCmd();
 
 		LoadFramePosition();
+		SetFrameScale();
 
 		SLASH_MAELSTROMWEAPON1 = slashCmdLocalized_1;
 		SlashCmdList.MAELSTROMWEAPON = HandleSlashCommands;
