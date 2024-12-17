@@ -1,3 +1,7 @@
+# 0.0.4
+
+11.0.7 toc update
+
 # 0.0.3
 
 fix cooldown frames also ooprs
