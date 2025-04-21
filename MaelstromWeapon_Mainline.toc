@@ -30,6 +30,19 @@
 ## Notes-zhCN: 为增强萨满显示一个小组件，用于以类似连击点的样式追踪漩涡武器增益层数。
 ## Title-zhTW: 漩涡武器
 ## Notes-zhTW: 為增強薩滿顯示一個小工具，用於以類似連擊點的樣式追蹤漩渦武器增益層數。
+
+## Category-enUS: Buffs & Debuffs
+## Category-deDE: Buffs & Debuffs
+## Category-esES: Beneficios y Perjuicios
+## Category-esMX: Beneficios y Perjuicios
+## Category-frFR: Améliorations et Affaiblissements
+## Category-itIT:
+## Category-koKR:
+## Category-ptBR: Bônus e Penalidades
+## Category-ruRU: Баффы и дебаффы
+## Category-zhCN: 增益和减益
+## Category-zhTW: 增益與減益
+
 ## SavedVariables: MaelWeap_DB
 
 MaelstromWeapon.lua
