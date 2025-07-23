@@ -1,3 +1,7 @@
+# 0.0.8
+
+Fix classic versions
+
 # 0.0.7
 
 11.1.7 toc update
