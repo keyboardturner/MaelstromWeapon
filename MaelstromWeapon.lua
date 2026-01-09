@@ -212,6 +212,10 @@ function MW.ChargeCheck()
 	MW.ClearCharges()
 	for k, v in pairs(buffInfo) do
 		local aura = C_UnitAuras.GetPlayerAuraBySpellID(v)
+
+		if aura and issecretvalue and issecretvalue(aura) then
+			return
+		end
 		if aura then
 			local chargeCount = aura.applications
 			local duration = aura.duration
