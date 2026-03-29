@@ -1,3 +1,24 @@
+# 1.0.0
+
+Major rework to settings:
+ - Added option to toggle the duration text (now defaulted off)
+ - Added option to show the duration text on the left or right of the widget
+ - Added option to change text size
+ - Added option to toggle the backdrop texture
+ - Added a "pulse" glow to the backdrop at 5+ charges
+ - Added Charge Gain animation
+ - Added Max Charge animation, triggering once upon 5 charges and repeatedly playing upon 10 charges
+ - Added color picker for the backdrop texture
+ - Added color picker for the backdrop glow texture
+ - Added color picker for the charger cover
+ - Added color picker for the charge fill values 1-5 and 6-10
+
+Added new slash commands: /mw, /maelweap
+
+Adjusted the settings dropdown button to no longer inherit the size of the Maelstrom Weapon widget
+
+Adjusted the duration text to only be displayed once instead of per charge
+
 # 0.1.3
 
 12.0.1 toc update

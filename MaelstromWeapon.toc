@@ -22,13 +22,13 @@
 ## Notes-itIT: Mostra un widget per Sciamano Potenziamento che traccia le cariche del buff Arma del Maelstrom in uno stile simile ai Punti Combo.
 ## Title-ptBR: Arma da Voragem
 ## Notes-ptBR: Exibe um widget para Xamã Aperfeiçoamento que rastreia as cargas do buff Arma da Voragem em um estilo semelhante aos Pontos de Combo.
-## Title-ruRU: Оружие Водоворота
+## Title-ruRU: Оружие Водоворота (Maelstrom Weapon)
 ## Notes-ruRU: Отображает виджет для шамана со специализацией «Стихии», который отслеживает заряды эффекта «Оружие Водоворота» в стиле, похожем на очки серии.
-## Title-koKR: 소용돌이치는 무기
+## Title-koKR: 소용돌이치는 무기 (Maelstrom Weapon)
 ## Notes-koKR: 강화 주술사를 위한 위젯을 표시하며 소용돌이치는 무기 버프 충전을 연계 포인트와 유사한 스타일로 추적합니다.
-## Title-zhCN: 漩涡武器
+## Title-zhCN: 漩涡武器 (Maelstrom Weapon)
 ## Notes-zhCN: 为增强萨满显示一个小组件，用于以类似连击点的样式追踪漩涡武器增益层数。
-## Title-zhTW: 漩涡武器
+## Title-zhTW: 漩涡武器 (Maelstrom Weapon)
 ## Notes-zhTW: 為增強薩滿顯示一個小工具，用於以類似連擊點的樣式追蹤漩渦武器增益層數。
 
 ## Category-enUS: Buffs & Debuffs
@@ -36,8 +36,8 @@
 ## Category-esES: Beneficios y Perjuicios
 ## Category-esMX: Beneficios y Perjuicios
 ## Category-frFR: Améliorations et Affaiblissements
-## Category-itIT:
-## Category-koKR:
+## Category-itIT: Benefici e penalità
+## Category-koKR: 버프 및 디버프
 ## Category-ptBR: Bônus e Penalidades
 ## Category-ruRU: Баффы и дебаффы
 ## Category-zhCN: 增益和减益
@@ -45,4 +45,5 @@
 
 ## SavedVariables: MaelWeap_DB
 
+Localization.lua
 MaelstromWeapon.lua
