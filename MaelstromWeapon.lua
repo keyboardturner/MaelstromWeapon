@@ -18,6 +18,7 @@ local DefaultSettings = {
 	pulseGlow = true,
 	enableBurstAnim = true,
 	enableDecorAnim = true,
+	hideOutOfCombat = false,
 	scale = 1,
 	backdropColor = {r = 1, g = 1, b = 1, a = 1},
 	glowColor = {r = 0, g = 0.8, b = 1, a = 0.8},
@@ -168,18 +169,21 @@ function editFrame.OnShow()
 		self:StopMovingOrSizing();
 		SaveFramePosition();
 	end)
+	MW.UpdateVisibility();
 end
+
 function editFrame.OnHide()
 	editFrame:Hide();
 	MW:EnableMouse(false);
 	MW:SetMovable(false);
+	MW.UpdateVisibility();
 end
 
 editFrame.scaler = CreateFrame("Frame", nil, UIParent, "BackdropTemplate");
 local ScaleSettings = editFrame.scaler;
 ScaleSettings:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
 ScaleSettings:SetWidth(280);
-ScaleSettings:SetHeight(480);
+ScaleSettings:SetHeight(520);
 ScaleSettings:SetBackdrop(backdropInfo);
 ScaleSettings:SetFrameStrata("HIGH");
 ScaleSettings:EnableMouse(true);
@@ -319,12 +323,13 @@ CreateCheckbox(ScaleSettings, L["Setting_PulseGlow"], "pulseGlow", {"TOPLEFT", S
 CreateCheckbox(ScaleSettings, L["Setting_BurstAnim"], "enableBurstAnim", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -210}, function() MW.ChargeCheck() end)
 CreateCheckbox(ScaleSettings, L["Setting_DecorAnim"], "enableDecorAnim", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -240}, function() MW.ChargeCheck() end)
 CreateCheckbox(ScaleSettings, L["Setting_BackdropTex"], "showBackdrop", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -270}, ApplyBackdropSettings)
+CreateCheckbox(ScaleSettings, L["Setting_HideOOC"], "hideOutOfCombat", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -300}, function() MW.UpdateVisibility() end)
 
-CreateColorPicker(ScaleSettings, L["Setting_BackdropColor"], "backdropColor", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -310}, ApplyBackdropSettings)
-CreateColorPicker(ScaleSettings, L["Setting_BackdropGlowColor"], "glowColor", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -340}, ApplyColors)
-CreateColorPicker(ScaleSettings, L["Setting_CoverTexColor"], "coverColor", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -370}, ApplyColors)
-CreateColorPicker(ScaleSettings, L["Setting_ChargeFill1_5TexColor"], "fillColor1_5", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -400}, ApplyColors)
-CreateColorPicker(ScaleSettings, L["Setting_ChargeFill6_10TexColor"], "fillColor6_10", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -430}, ApplyColors)
+CreateColorPicker(ScaleSettings, L["Setting_BackdropColor"], "backdropColor", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -340}, ApplyBackdropSettings)
+CreateColorPicker(ScaleSettings, L["Setting_BackdropGlowColor"], "glowColor", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -370}, ApplyColors)
+CreateColorPicker(ScaleSettings, L["Setting_CoverTexColor"], "coverColor", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -400}, ApplyColors)
+CreateColorPicker(ScaleSettings, L["Setting_ChargeFill1_5TexColor"], "fillColor1_5", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -430}, ApplyColors)
+CreateColorPicker(ScaleSettings, L["Setting_ChargeFill6_10TexColor"], "fillColor6_10", {"TOPLEFT", ScaleSettings, "TOPLEFT", 20, -460}, ApplyColors)
 
 
 function editFrame.ShowScaleButton()
@@ -469,6 +474,29 @@ function MW.SpecCheck()
 		end
 		]]
 		return true
+	end
+end
+
+function MW.UpdateVisibility()
+	if not MW.SpecCheck() then
+		MW:Hide();
+		return;
+	end
+
+	if editFrame:IsShown() then
+		MW:Show();
+		return;
+	end
+
+	if MaelWeap_DB and MaelWeap_DB.hideOutOfCombat then
+		local charges = MW.lastChargeCount or 0
+		if MW.inCombat or charges > 0 then
+			MW:Show();
+		else
+			MW:Hide();
+		end
+	else
+		MW:Show();
 	end
 end
 
@@ -643,7 +671,8 @@ function MW.ChargeCheck()
 			end
 		end
 
-		return chargeCount
+		MW.UpdateVisibility();
+		return chargeCount;
 	else
 		MW.lastChargeCount = 0;
 		MW.lastExpirationTime = 0;
@@ -666,6 +695,7 @@ function MW.ChargeCheck()
 			MW.glowAnimGroup:Stop();
 			MW.glowTex:Hide();
 		end
+		MW.UpdateVisibility();
 	end
 end
 
@@ -730,6 +760,8 @@ local EventsTableClassic = {
 };
 
 MW:RegisterEvent("ADDON_LOADED");
+MW:RegisterEvent("PLAYER_REGEN_DISABLED");
+MW:RegisterEvent("PLAYER_REGEN_ENABLED");
 
 MW:SetScript("OnEvent", function(self, event, arg1)
 	if event == "ADDON_LOADED" and arg1 == "MaelstromWeapon" then
@@ -739,9 +771,11 @@ MW:SetScript("OnEvent", function(self, event, arg1)
 		ApplyColors();
 		ApplyCooldownTextSettings();
 		ApplyBackdropSettings();
+		
+		MW.inCombat = InCombatLockdown();
         
-		editFrame.scaler.ScaleSlider:SetValue(MaelWeap_DB.scale or 1)
-		editFrame.scaler.TextSizeSlider:SetValue(MaelWeap_DB.cooldownFontSize or DefaultSettings.cooldownFontSize)
+		editFrame.scaler.ScaleSlider:SetValue(MaelWeap_DB.scale or 1);
+		editFrame.scaler.TextSizeSlider:SetValue(MaelWeap_DB.cooldownFontSize or DefaultSettings.cooldownFontSize);
 
 		SLASH_MAELSTROMWEAPON1 = L["SLASH_MW1"];
 		SLASH_MAELSTROMWEAPON2 = L["SLASH_MW2"];
@@ -753,21 +787,23 @@ MW:SetScript("OnEvent", function(self, event, arg1)
 
 		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 			for k, v in pairs(EventsTable) do
-				MW:RegisterEvent(v)
+				MW:RegisterEvent(v);
 			end
 		else
 			for k, v in pairs(EventsTableClassic) do
-				MW:RegisterEvent(v)
+				MW:RegisterEvent(v);
 			end
 		end
+	elseif event == "PLAYER_REGEN_DISABLED" then
+		MW.inCombat = true;
+		MW.UpdateVisibility();
+	elseif event == "PLAYER_REGEN_ENABLED" then
+		MW.inCombat = false;
+		MW.UpdateVisibility();
 	end
 
-	if event ~= "ADDON_LOADED" then
-		if MW.SpecCheck() == true then
-			MW:Show()
-		else
-			MW:Hide()
-		end
+	if event ~= "ADDON_LOADED" and event ~= "PLAYER_REGEN_DISABLED" and event ~= "PLAYER_REGEN_ENABLED" then
+		MW.UpdateVisibility();
 	end
 
 end);

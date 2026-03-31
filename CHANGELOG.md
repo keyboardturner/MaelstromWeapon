@@ -1,3 +1,7 @@
+# 1.0.1
+
+Added option to hide out of combat when no charges are active
+
 # 1.0.0
 
 Major rework to settings:

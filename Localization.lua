@@ -37,6 +37,7 @@ if LOCALE == "enUS" then
 	L["Setting_CoverTexColor"] = "Charge Cover Texture Color"
 	L["Setting_ChargeFill1_5TexColor"] = "Charge Fill Color (1-5)"
 	L["Setting_ChargeFill6_10TexColor"] = "Charge Fill Color (6-10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 return end
 
@@ -63,6 +64,7 @@ if LOCALE == "esMX" then
 	L["Setting_CoverTexColor"] = "Color de textura de cobertura"
 	L["Setting_ChargeFill1_5TexColor"] = "Color de relleno (1-5)"
 	L["Setting_ChargeFill6_10TexColor"] = "Color de relleno (6-10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 return end
 
@@ -89,6 +91,7 @@ if LOCALE == "esES" then
 	L["Setting_CoverTexColor"] = "Color de textura de cobertura"
 	L["Setting_ChargeFill1_5TexColor"] = "Color de relleno (1-5)"
 	L["Setting_ChargeFill6_10TexColor"] = "Color de relleno (6-10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 return end
 
@@ -114,6 +117,7 @@ if LOCALE == "deDE" then
 	L["Setting_CoverTexColor"] = "Farbe der Abdeckungstextur"
 	L["Setting_ChargeFill1_5TexColor"] = "Füllfarbe (1–5)"
 	L["Setting_ChargeFill6_10TexColor"] = "Füllfarbe (6–10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 return end
 
@@ -140,6 +144,7 @@ if LOCALE == "frFR" then
 	L["Setting_CoverTexColor"] = "Couleur de la texture de couverture"
 	L["Setting_ChargeFill1_5TexColor"] = "Couleur de remplissage (1–5)"
 	L["Setting_ChargeFill6_10TexColor"] = "Couleur de remplissage (6–10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 return end
 
@@ -166,6 +171,7 @@ if LOCALE == "itIT" then
 	L["Setting_CoverTexColor"] = "Colore texture copertura"
 	L["Setting_ChargeFill1_5TexColor"] = "Colore riempimento (1-5)"
 	L["Setting_ChargeFill6_10TexColor"] = "Colore riempimento (6-10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 return end
 
@@ -192,6 +198,7 @@ if LOCALE == "ptBR" then
 	L["Setting_CoverTexColor"] = "Cor da textura de cobertura"
 	L["Setting_ChargeFill1_5TexColor"] = "Cor de preenchimento (1-5)"
 	L["Setting_ChargeFill6_10TexColor"] = "Cor de preenchimento (6-10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 -- Note that the EU Portuguese WoW client also
 -- uses the Brazilian Portuguese locale code.
@@ -220,6 +227,7 @@ if LOCALE == "ruRU" then
 	L["Setting_CoverTexColor"] = "Цвет текстуры покрытия"
 	L["Setting_ChargeFill1_5TexColor"] = "Цвет заполнения (1-5)"
 	L["Setting_ChargeFill6_10TexColor"] = "Цвет заполнения (6-10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 return end
 
@@ -246,6 +254,7 @@ if LOCALE == "koKR" then
 	L["Setting_CoverTexColor"] = "커버 텍스처 색상"
 	L["Setting_ChargeFill1_5TexColor"] = "충전 색상 (1-5)"
 	L["Setting_ChargeFill6_10TexColor"] = "충전 색상 (6-10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 return end
 
@@ -272,6 +281,7 @@ if LOCALE == "zhCN" then
 	L["Setting_CoverTexColor"] = "覆盖纹理颜色"
 	L["Setting_ChargeFill1_5TexColor"] = "填充颜色 (1-5)"
 	L["Setting_ChargeFill6_10TexColor"] = "填充颜色 (6-10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 return end
 
@@ -298,5 +308,6 @@ if LOCALE == "zhTW" then
 	L["Setting_CoverTexColor"] = "覆蓋材質顏色"
 	L["Setting_ChargeFill1_5TexColor"] = "填充顏色 (1-5)"
 	L["Setting_ChargeFill6_10TexColor"] = "填充顏色 (6-10)"
+	L["Setting_HideOOC"] = HUD_EDIT_MODE_SETTING_COOLDOWN_VIEWER_HIDE_WHEN_INACTIVE
 
 return end
