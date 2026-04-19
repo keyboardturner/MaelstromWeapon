@@ -1,3 +1,7 @@
+# 1.0.2
+
+12.0.5 toc update
+
 # 1.0.1
 
 Added option to hide out of combat when no charges are active
