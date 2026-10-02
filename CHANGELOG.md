@@ -1,3 +1,7 @@
+# 1.0.6
+
+Slightly changed client checking method
+
 # 1.0.5
 
 WoW Forever testing - This is an in-development testing version. Some things may throw errors or explode.
