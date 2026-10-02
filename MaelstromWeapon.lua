@@ -2,7 +2,15 @@ local addonName, MaelstromWeapon = ...
 
 local L = MaelstromWeapon.L
 
-local classFilename, classId = UnitClassBase("player")
+local classFilename, classId = UnitClassBase("player");
+
+local build = select(4, GetBuildInfo());
+local IsForever = (WOW_PROJECT_ID == WOW_PROJECT_CAMELOT);
+local IsClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC);
+local IsTBC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC);
+local IsWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC);
+local IsCataclysm = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC);
+local IsMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC);
 
 --Shaman only addon, so disable for anything non-Shaman
 if classId ~= 7 then
@@ -462,8 +470,8 @@ MW.decorRightAnimGroup:SetScript("OnFinished", function() MW.decorRightTex:Hide(
 MW.decorRightAnimGroup:SetScript("OnPlay", function() MW.decorRightTex:Show() end)
 
 function MW.SpecCheck()
-	if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC or WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC then
-		return true
+	if IsForever or IsClassic or IsTBC or IsWrath or IsCataclysm then
+		return true; -- locked in "specializations" as we know them don't exist in these flavors
 	end
 	local id, name, description, icon, role, primaryStat = GetSpecializationInfo(GetSpecialization())
 	if id == 263 then
@@ -473,7 +481,7 @@ function MW.SpecCheck()
 			TotemFrame:SetScale(.9)
 		end
 		]]
-		return true
+		return true;
 	end
 end
 
